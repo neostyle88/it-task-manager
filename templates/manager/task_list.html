@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %} - All tasks {% endblock title %}
+
+{% block content %}
+
+  <div class="container-fluid py-4">
+    {% if task_list %}
+      <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header pb-0 px-3">
+            <h6 class="mb-0">Tasks</h6>
+          </div>
+          <div class="card-body pt-4 p-3">
+            <ul class="list-group">
+              {% for task in task_list %}
+              <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                <div class="d-flex flex-column">
+                  <h6 class="mb-3 text-sm"><a href="{% url "manager:task-detail" pk=task.id %}">{{ task.name }}</a></h6>
+                  <span class="mb-2 text-xs">Priority: <span class="text-dark ms-sm-2 font-weight-bold">{{ task.priority }}</span></span>
+                  <span class="mb-2 text-xs">State: <span class="text-dark ms-sm-2 font-weight-bold">{{ task.is_completed|yesno:"Complited, Non complited" }}</span></span>
+                </div>
+                <div class="d-flex my-auto ms-auto">
+                  <form action="{% url 'manager:task-delete' pk=task.id %}" method="POST" onsubmit="return confirm('Are you sure you want to delete {{ task.name }}?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link text-danger text-gradient px-3 mb-0" data-toggle="tooltip" data-original-title="Delete task">
+                      <i class="far fa-trash-alt me-2"></i>Delete
+                    </button>
+                  </form>
+                  <a class="btn btn-link text-dark px-3 mb-0" href="{% url "manager:task-update" pk=task.id %}"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+      <h6>Oops, your task list is empty!</h6>
+    {% endif %}
+    <h6><a class="btn btn-primary my-2" href="{% url "manager:task-create" %}">Add new task</a></h6>
+  </div>
+
+{% endblock content %}

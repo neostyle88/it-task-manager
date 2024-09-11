@@ -1,0 +1,62 @@
+{% load crispy_forms_filters %}
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+  <div class="container-fluid py-1 px-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{% url "manager:index" %}">Home</a></li>
+            <li class="breadcrumb-item text-sm text-dark opacity-5" aria-current="page">
+              {% if request.path == "/projects/"%}
+                Projects
+              {% elif request.path == "/teams/" %}
+                Teams
+              {% elif request.path == "/workers/" %}
+                Employees
+              {% elif request.path == "/tasks/" %}
+                Tasks
+              {% elif request.path == "/positions/" %}
+                Positions
+              {% elif request.path == "/task-types/" %}
+                Task types
+              {% elif object == worker %}
+                {{ object.username }}
+              {% elif object %}
+                {{ object.name }}
+              {% endif %}
+            </li>
+        </ol>
+    </nav>
+    <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+      <div class="ms-md-auto pe-md-4 d-flex align-items-center justify-content-center">
+        <div class="input-group">
+          <form class="form-outline" method="get">
+            <div class="d-flex align-items-center">
+              <div class="w-100">
+                {{ search_form|crispy }}
+              </div>
+              {% if search_form %}
+                <input class="btn btn-outline-success" type="submit" value="Search">
+              {% endif %}
+            </div>
+          </form>
+        </div>
+      </div>
+      <ul class="navbar-nav ms-auto justify-content-end">
+        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+          <a href="javascript:" class="nav-link mx-2 text-body p-0" id="iconNavbarSidenav">
+            <div class="sidenav-toggler-inner">
+              <i class="sidenav-toggler-line"></i>
+              <i class="sidenav-toggler-line"></i>
+              <i class="sidenav-toggler-line"></i>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item d-flex align-items-center">
+          <a href="{% url 'logout' %}" class="nav-link text-body font-weight-bold px-0">
+            <i class="fa fa-user me-1"></i>
+            <span class="d-sm-inline d-none">LOGOUT</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

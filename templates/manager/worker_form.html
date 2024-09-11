@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}- {{ object|yesno:"Edit worker,Create a new worker" }}{% endblock %}
+
+{% block content %}
+  <h1>{{ object|yesno:"Edit,Create" }}
+    {% if object %}
+      "{{ worker.username }}"
+    {% else %}
+      new worker
+    {% endif %}
+  </h1>
+  <div class="container-fluid py-4">
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {% crispy form %}
+
+    </form>
+  </div>
+{% endblock %}

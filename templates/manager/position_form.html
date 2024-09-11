@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  - Create a new position
+{% endblock %}
+
+{% block content %}
+  <h1>Enter position name</h1>
+  <div class="container-fluid py-4">
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {% crispy form %}
+
+    </form>
+  </div>
+{% endblock %}

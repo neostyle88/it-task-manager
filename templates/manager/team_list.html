@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}- All teams {% endblock title %}
+
+{% block content %}
+  <div class="container-fluid py-4">
+    {% if team_list %}
+      <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header pb-0 px-3">
+            <h6 class="mb-0">Teams</h6>
+          </div>
+          <div class="card-body pt-4 p-3">
+            <ul class="list-group">
+              {% for team in team_list %}
+              <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                <div class="col-10 d-flex flex-column">
+                  <h6 class="mb-3 text-sm">{{ team.name }}</h6>
+                  <span class="mb-2 text-xs">Projects:
+                    <span class="text-dark ms-sm-2 font-weight-bold">
+                      {% for project in team.projects.all %}
+                        <a href="{% url "manager:project-detail" pk=project.id %}">{{ project }}</a>
+                        {% if not forloop.last %},{% endif %}
+                      {% endfor %}
+                    </span>
+                  </span>
+                  <span class="mb-2 text-xs">Members:
+                    <span class="text-dark ms-sm-2 font-weight-bold">
+                      {% for member in team.members.all %}
+                        <a href="{% url "manager:worker-detail" pk=member.id %}">{{ member.username }}</a>
+                        {% if not forloop.last %},{% endif %}
+                      {% endfor %}
+                    </span>
+                  </span>
+                </div>
+                  <div class="d-flex ms-auto my-auto">
+                    <form action="{% url 'manager:team-delete' pk=team.id %}" method="POST"
+                          onsubmit="return confirm('Are you sure you want to delete {{ team.name }}?');">
+                      {% csrf_token %}
+                      <button type="submit" class="my-auto btn btn-link text-danger text-gradient px-3 mb-0"
+                              data-toggle="tooltip" data-original-title="Delete project">
+                        <i class="far fa-trash-alt me-2"></i>Delete
+                      </button>
+                    </form>
+                    <a class="btn btn-link text-dark px-3 my-auto mb-0" href="{% url "manager:team-update" pk=team.id %}"><i
+                        class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                  </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+      <h6>Oops, your team list is empty!</h6>
+    {% endif %}
+    <h6><a class="btn btn-primary my-2" href="{% url "manager:team-create" %}">Create new team</a></h6>
+  </div>
+
+{% endblock content %}

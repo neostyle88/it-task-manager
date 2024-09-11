@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+  - Positions
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid py-4">
+    {% if position_list %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6>Positions</h6>
+            </div>
+            <div class="card-body pt-0 pb-2">
+              <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                  <tr>
+                    <th class="col-6 col-md-8 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                      Position name
+                    </th>
+                    <th class="col-3 col-md-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                      Employees in the position
+                    </th>
+                    <th class="col-3 col-md-2 text-secondary opacity-7"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for position in position_list %}
+                    <tr>
+                      <td>
+                        {{ position.name }}
+                      </td>
+                      <td>
+                        {{ position.workers.all.count }}
+                      </td>
+                      <td class="align-middle">
+                        <form action="{% url 'manager:position-delete' pk=position.id %}" method="POST" onsubmit="return confirm('Are you sure you want to delete the position {{ position.name }}?');">
+                          {% csrf_token %}
+                          <button type="submit" class="my-auto btn btn-link text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete position">
+                            Delete
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <h6>Oops, your position list is empty!</h6>
+    {% endif %}
+    <h6><a class="btn btn-primary my-2" href="{% url "manager:position-create" %}">Add new position</a></h6>
+  </div>
+{% endblock %}
